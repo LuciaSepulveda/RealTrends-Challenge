@@ -25,11 +25,11 @@ Se debe crear una aplicación de votación realtime.
 ## Correr el proyecto
 ```bash
 ## Instalar las dependencias del proyecto
-npm install
+yarn
 
 ## Instalar las dependencias de los paquetes
-npm run bootstrap
+yarn run bootstrap
 
 ## Correr los paquetes
-npm run dev
+yarn run dev
 ```
