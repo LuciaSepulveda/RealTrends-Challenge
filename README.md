@@ -23,7 +23,7 @@ Se debe crear una aplicación de votación realtime.
 ![Spec](./spec.png)
 
 ## Demo de la aplicación
-![Challenge](https://realtrends-challenge.netlify.app/)
+[Challenge](https://realtrends-challenge.netlify.app/)
 
 ## Correr el proyecto
 ```bash
