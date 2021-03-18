@@ -1,5 +1,4 @@
-//const token = process.env.API_KEY
-const token = "8636479b995d6c79186f05c1ed916d34"
+const token = import.meta.env.VITE_KEY
 
 export const URL = `https://api.themoviedb.org/3/tv/popular?api_key=${token}&language=en-US&page=1`
 

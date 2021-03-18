@@ -1,8 +1,8 @@
 import {Box, SimpleGrid, Img, Button, Text, GridItem, Spinner} from "@chakra-ui/react"
 import * as React from "react"
 import axios from "axios"
-import {headers, URL} from "../../../api/api"
 
+import {headers, URL} from "../../../api/api"
 import {Serie} from "../../../types/types"
 
 import {urlImage} from "~/api/api"
@@ -34,7 +34,6 @@ const SelectOptions: React.FC<Props> = ({options, state}) => {
     if (options.length === 2) {
       state()
     }
-    console.log(options)
   }
 
   if (status === false) {
@@ -43,9 +42,9 @@ const SelectOptions: React.FC<Props> = ({options, state}) => {
 
   if (update === true && status === true) {
     return (
-      <SimpleGrid columns={5} m="auto" spacing={4} w="70%">
-        <GridItem colSpan={5}>
-          <Text fontSize="4xl" m="30px">
+      <SimpleGrid columns={{sm: 2, md: 3, lg: 4, xl: 5}} m="auto" spacing={4} w="70%">
+        <GridItem colSpan={{sm: 2, md: 3, lg: 4, xl: 5}}>
+          <Text color="primary" fontSize="4xl" fontWeight="semibold" m="30px">
             Please select two series
           </Text>
         </GridItem>
@@ -55,7 +54,7 @@ const SelectOptions: React.FC<Props> = ({options, state}) => {
               {options[0].name === elem.name && (
                 <Button disabled h="100%" w="100%">
                   <Box m="auto" p={2} w="100%">
-                    <Img src={urlImage + elem.poster_path} w="100%" />
+                    <Img h="100%" src={urlImage + elem.poster_path} w="100%" />
                     <Text overflow="hidden" p={2}>
                       {elem.name}
                     </Text>
@@ -65,7 +64,7 @@ const SelectOptions: React.FC<Props> = ({options, state}) => {
               {options[0].name !== elem.name && (
                 <Button h="100%" w="100%" onClick={() => selectOption(elem)}>
                   <Box m="auto" p={2} w="100%">
-                    <Img src={urlImage + elem.poster_path} w="100%" />
+                    <Img h="100%" src={urlImage + elem.poster_path} w="100%" />
                     <Text overflow="hidden" p={2}>
                       {elem.name}
                     </Text>
@@ -79,11 +78,12 @@ const SelectOptions: React.FC<Props> = ({options, state}) => {
     )
   }
 
+  /*
   if (update === false && status === true) {
     return (
-      <SimpleGrid columns={5} m="auto" spacing={4} w="70%">
-        <GridItem colSpan={5}>
-          <Text fontSize="4xl" m="30px">
+      <SimpleGrid columns={{sm: 2, md: 3, lg: 4, xl: 5}} m="auto" spacing={4} w="70%">
+        <GridItem colSpan={{sm: 2, md: 3, lg: 4, xl: 5}}>
+          <Text color="primary" fontSize="4xl" fontWeight="semibold" m="30px">
             Please select two series
           </Text>
         </GridItem>
@@ -91,9 +91,9 @@ const SelectOptions: React.FC<Props> = ({options, state}) => {
           return (
             <Box key={elem.id} boxShadow="lg">
               {options[0] === undefined && (
-                <Button h="100%" w="100%" onClick={() => selectOption(elem)}>
+                <Button _hover={{}} h="100%" w="100%" onClick={() => selectOption(elem)}>
                   <Box m="auto" p={2} w="100%">
-                    <Img src={urlImage + elem.poster_path} w="100%" />
+                    <Img h="100%" src={urlImage + elem.poster_path} w="100%" />
                     <Text overflow="hidden" p={2}>
                       {elem.name}
                     </Text>
@@ -106,17 +106,36 @@ const SelectOptions: React.FC<Props> = ({options, state}) => {
       </SimpleGrid>
     )
   }
-
+*/
   return (
-    <SimpleGrid columns={5} m="auto" mt="0px" spacing={4} w="60%">
-      <GridItem colSpan={5}>
-        <Text fontSize="4xl" m="30px">
+    <SimpleGrid columns={{sm: 2, md: 3, lg: 4, xl: 5}} m="auto" mt="0px" spacing={4} w="70%">
+      <GridItem colSpan={{sm: 2, md: 3, lg: 4, xl: 5}}>
+        <Text color="primary" fontSize="4xl" fontWeight="semibold" m="30px">
           Please select two series
         </Text>
       </GridItem>
-      <GridItem colSpan={5} mt={100}>
-        <Spinner />
-      </GridItem>
+      {status === false && (
+        <GridItem colSpan={{sm: 2, md: 3, lg: 4, xl: 5}} mt={150}>
+          <Spinner m="auto" />
+        </GridItem>
+      )}
+      {status === true &&
+        series.map((elem) => {
+          return (
+            <Box key={elem.id} boxShadow="lg">
+              {options[0] === undefined && (
+                <Button _hover={{}} h="100%" w="100%" onClick={() => selectOption(elem)}>
+                  <Box m="auto" p={2} w="100%">
+                    <Img h="100%" src={urlImage + elem.poster_path} w="100%" />
+                    <Text overflow="hidden" p={2}>
+                      {elem.name}
+                    </Text>
+                  </Box>
+                </Button>
+              )}
+            </Box>
+          )
+        })}
     </SimpleGrid>
   )
 }

@@ -1,4 +1,4 @@
-import {Box, SimpleGrid, Img, Text, Center, Button} from "@chakra-ui/react"
+import {Box, SimpleGrid, Img, Text, Center} from "@chakra-ui/react"
 import * as React from "react"
 
 import twitch from "../../../assets/twitch.png"
@@ -30,7 +30,7 @@ const ScreenVote: React.FC<Props> = ({options, votes}) => {
 
   return (
     <Box>
-      <SimpleGrid columns={2} m="auto" spacing={6} w="50%">
+      <SimpleGrid columns={2} m="auto" spacing={6} w={{sm: "70%", md: "70%", lg: "60%", xl: "60%"}}>
         {options.map((elem) => {
           const index = options.indexOf(elem)
 
@@ -39,15 +39,33 @@ const ScreenVote: React.FC<Props> = ({options, votes}) => {
               {index === 0 && (
                 <Box p={4} position="relative" zIndex={1}>
                   <Box p={0} position="relative" zIndex={1}>
-                    <Text>Option A</Text>
-                    <Img src={urlImage + elem.poster_path} w="100%" />
-                    <Text>{elem.name}</Text>
+                    {heightA >= 95 && (
+                      <Text color="white" fontSize="lg" fontWeight="semibold" p={1}>
+                        OPTION A
+                      </Text>
+                    )}
+                    {heightA < 95 && (
+                      <Text color="black" fontSize="lg" fontWeight="semibold" p={1}>
+                        OPTION A
+                      </Text>
+                    )}
+                    <Img boxShadow="lg" src={urlImage + elem.poster_path} w="100%" />
+                    <Text
+                      color="white"
+                      fontSize="lg"
+                      fontWeight="semibold"
+                      h="30px"
+                      overflow="hidden"
+                      p={1}
+                    >
+                      {elem.name}
+                    </Text>
                   </Box>
                   <Box
                     style={{
                       position: "absolute",
                       height: `${heightA}%`,
-                      backgroundColor: `hsl(${heightA}, 100%, 50%)`,
+                      backgroundColor: `hsl(${heightA}, 100%, 40%)`,
                       left: 0,
                       bottom: 0,
                       width: "100%",
@@ -61,15 +79,33 @@ const ScreenVote: React.FC<Props> = ({options, votes}) => {
               {index === 1 && (
                 <Box p={4} position="relative" zIndex={1}>
                   <Box p={0} position="relative" zIndex={1}>
-                    <Text>Option B</Text>
-                    <Img src={urlImage + elem.poster_path} w="100%" />
-                    <Text>{elem.name}</Text>
+                    {heightB >= 95 && (
+                      <Text color="white" fontSize="lg" fontWeight="semibold" p={1}>
+                        OPTION B
+                      </Text>
+                    )}
+                    {heightB < 95 && (
+                      <Text color="black" fontSize="lg" fontWeight="semibold" p={1}>
+                        OPTION B
+                      </Text>
+                    )}
+                    <Img boxShadow="2xl" src={urlImage + elem.poster_path} w="100%" />
+                    <Text
+                      color="white"
+                      fontSize="lg"
+                      fontWeight="semibold"
+                      h="30px"
+                      overflow="hidden"
+                      p={1}
+                    >
+                      {elem.name}
+                    </Text>
                   </Box>
                   <Box
                     style={{
                       position: "absolute",
                       height: `${heightB}%`,
-                      backgroundColor: `hsl(${heightB}, 100%, 50%)`,
+                      backgroundColor: `hsl(${heightB}, 100%, 40%)`,
                       left: 0,
                       bottom: 0,
                       width: "100%",
@@ -84,12 +120,23 @@ const ScreenVote: React.FC<Props> = ({options, votes}) => {
           )
         })}
       </SimpleGrid>
-      <Box bg="gray.200" column={2} h="300px" m="auto" mt="20px" overflowY="auto" p={4} w="80%">
+      <Box
+        bg="gray.200"
+        borderRadius={4}
+        boxShadow="md"
+        column={2}
+        h="300px"
+        m="auto"
+        mt="20px"
+        overflowY="auto"
+        p={4}
+        w="70%"
+      >
         {votes.map((elem) => {
           return (
             <Center key={elem.user}>
               <Img mr="9px" mt="3px" src={twitch} w="20px" />
-              <Text as="b" fontSize="l" color="primary">
+              <Text as="b" color="primary" fontSize="l">
                 {elem.user}
               </Text>
               <Text fontSize="l">
@@ -100,7 +147,6 @@ const ScreenVote: React.FC<Props> = ({options, votes}) => {
           )
         })}
       </Box>
-      <Button>Reset</Button>
     </Box>
   )
 }

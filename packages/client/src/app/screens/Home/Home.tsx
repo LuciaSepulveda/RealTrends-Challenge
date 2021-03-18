@@ -13,49 +13,35 @@ const Home: React.FC = () => {
   const [options, setOptions] = React.useState<Serie[]>([])
   const [votes, setVotes] = React.useState<Vote[]>([])
   const [channel, setChannel] = React.useState<string>("")
-  const [sendChannel, setSendChannel] = React.useState<boolean>(false)
+  const [error, setError] = React.useState<string>("")
 
   React.useEffect(() => {
     if (state === "ready") {
-      const socket = SocketIO.io("http://localhost:5000")
+      const socket = SocketIO.io("http://localhost:5000", {
+        transports: ["websocket"],
+      })
 
-      console.log(channel)
       socket.on("state", (votes: Vote[]) => setVotes(votes))
       socket.emit("set-channel", channel)
     }
   }, [state, channel])
-  /*
-  React.useEffect(() => {
-    if (state === "ready" && sendChannel === false) {
-      socket.emit("set-channel", channel)
-      setSendChannel(true)
-    }
-  }, [state, channel, sendChannel])*/
-  /*
-  React.useEffect(() => {
-    if (status === true) {
-      socket.emit("set-channel", channel)
-    }
-  }, [status, channel])
-*/
+
   const optionsReady = () => {
     setState(State.Ready)
   }
 
   const handleChange = (event: {target: {value: React.SetStateAction<string>}}) => {
+    setError("")
     setChannel(event.target.value)
   }
 
   const channelReady = () => {
-    setStatus(true)
-    setSendChannel(true)
+    if (channel === "") {
+      setError("Please enter a name")
+    } else {
+      setStatus(true)
+    }
   }
-  /*
-  if (status === true && sendChannel === false) {
-    socket.emit("set-channel", channel)
-    setSendChannel(true)
-  }
-*/
 
   if (state === "init" && status === true) {
     return <SelectOptions options={options} state={optionsReady} />
@@ -66,19 +52,30 @@ const Home: React.FC = () => {
   }
 
   return (
-    <Box>
-      <Text>Enter name of Twitch channel: </Text>
+    <Box bg="gray.200" boxShadow="lg" p="100px 50px">
+      <Text color="primary" fontSize="xl" fontWeight="semibold" mb="10px">
+        Enter name of Twitch channel:{" "}
+      </Text>
       <Input
-        bg="red"
+        _hover={{
+          borderColor: "blue.400",
+        }}
+        bg="white"
+        borderColor="primary"
+        color="black"
+        errorBorderColor="primary"
+        focusBorderColor="blue.400"
         name="channel"
         placeholder="Twitch channel"
-        type="text"
         value={channel}
-        variant="filled"
         onChange={handleChange}
       />
-      <Text>{channel}</Text>
-      <Button onClick={() => channelReady()}>Ok</Button>
+      <Text color="red" fontSize="smaller">
+        {error}
+      </Text>
+      <Button colorScheme="telegram" mt="12px" onClick={() => channelReady()}>
+        OK
+      </Button>
     </Box>
   )
 }
