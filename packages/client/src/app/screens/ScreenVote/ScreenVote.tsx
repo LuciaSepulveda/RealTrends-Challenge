@@ -1,5 +1,6 @@
 import {Box, SimpleGrid, Img, Text, Center} from "@chakra-ui/react"
 import * as React from "react"
+import {motion} from "framer-motion"
 
 import twitch from "../../../assets/twitch.png"
 
@@ -17,6 +18,11 @@ const ScreenVote: React.FC<Props> = ({options, votes}) => {
   let votesB = 0
   let heightA = 0
   let heightB = 0
+
+  const animation = {
+    visible: {opacity: 1, scale: 1},
+    hidden: {opacity: 0, scale: 0},
+  }
 
   votes.forEach((vote) => {
     if (vote.option === "A") votesA += 1
@@ -135,14 +141,35 @@ const ScreenVote: React.FC<Props> = ({options, votes}) => {
         {votes.map((elem) => {
           return (
             <Center key={elem.user}>
-              <Img mr="9px" mt="3px" src={twitch} w="20px" />
-              <Text as="b" color="primary" fontSize="l">
-                {elem.user}
-              </Text>
-              <Text fontSize="l">
-                {" "}
-                : {elem.option}! {elem.review}{" "}
-              </Text>
+              <motion.div
+                animate="visible"
+                initial="hidden"
+                transition={{duration: 0.3}}
+                variants={animation}
+              >
+                <Img mr="9px" mt="3px" src={twitch} w="20px" />
+              </motion.div>
+              <motion.div
+                animate="visible"
+                initial="hidden"
+                transition={{duration: 0.3}}
+                variants={animation}
+              >
+                <Text as="b" color="primary" fontSize="l">
+                  {elem.user}
+                </Text>
+              </motion.div>
+              <motion.div
+                animate="visible"
+                initial="hidden"
+                transition={{duration: 0.3}}
+                variants={animation}
+              >
+                <Text fontSize="l">
+                  {" "}
+                  : {elem.option}! {elem.review}{" "}
+                </Text>
+              </motion.div>
             </Center>
           )
         })}

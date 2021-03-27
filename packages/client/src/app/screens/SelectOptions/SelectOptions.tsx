@@ -1,7 +1,9 @@
 import {Box, SimpleGrid, Img, Button, Text, GridItem, Spinner} from "@chakra-ui/react"
 import * as React from "react"
 import axios from "axios"
+import {motion} from "framer-motion"
 
+import Option from "../../../components/Option/Option"
 import {headers, URL} from "../../../api/api"
 import {Serie} from "../../../types/types"
 
@@ -36,6 +38,11 @@ const SelectOptions: React.FC<Props> = ({options, state}) => {
     }
   }
 
+  const animation = {
+    visible: {opacity: 1, scale: 1},
+    hidden: {opacity: 0, scale: 0},
+  }
+
   if (status === false) {
     getData()
   }
@@ -50,65 +57,39 @@ const SelectOptions: React.FC<Props> = ({options, state}) => {
         </GridItem>
         {series.map((elem) => {
           return (
-            <Box key={elem.id} boxShadow="lg">
+            <>
               {options[0].name === elem.name && (
-                <Button disabled h="100%" w="100%">
-                  <Box m="auto" p={2} w="100%">
-                    <Img h="100%" src={urlImage + elem.poster_path} w="100%" />
-                    <Text overflow="hidden" p={2}>
-                      {elem.name}
-                    </Text>
-                  </Box>
-                </Button>
+                <Option
+                  key={elem.id}
+                  disabled={true}
+                  name={elem.name}
+                  url={urlImage + elem.poster_path}
+                />
               )}
               {options[0].name !== elem.name && (
-                <Button h="100%" w="100%" onClick={() => selectOption(elem)}>
-                  <Box m="auto" p={2} w="100%">
-                    <Img h="100%" src={urlImage + elem.poster_path} w="100%" />
-                    <Text overflow="hidden" p={2}>
-                      {elem.name}
-                    </Text>
-                  </Box>
-                </Button>
+                <Option
+                  key={elem.id}
+                  disabled={false}
+                  name={elem.name}
+                  select={() => selectOption(elem)}
+                  url={urlImage + elem.poster_path}
+                />
               )}
-            </Box>
+            </>
           )
         })}
       </SimpleGrid>
     )
   }
 
-  /*
-  if (update === false && status === true) {
-    return (
-      <SimpleGrid columns={{sm: 2, md: 3, lg: 4, xl: 5}} m="auto" spacing={4} w="70%">
-        <GridItem colSpan={{sm: 2, md: 3, lg: 4, xl: 5}}>
-          <Text color="primary" fontSize="4xl" fontWeight="semibold" m="30px">
-            Please select two series
-          </Text>
-        </GridItem>
-        {series.map((elem) => {
-          return (
-            <Box key={elem.id} boxShadow="lg">
-              {options[0] === undefined && (
-                <Button _hover={{}} h="100%" w="100%" onClick={() => selectOption(elem)}>
-                  <Box m="auto" p={2} w="100%">
-                    <Img h="100%" src={urlImage + elem.poster_path} w="100%" />
-                    <Text overflow="hidden" p={2}>
-                      {elem.name}
-                    </Text>
-                  </Box>
-                </Button>
-              )}
-            </Box>
-          )
-        })}
-      </SimpleGrid>
-    )
-  }
-*/
   return (
-    <SimpleGrid columns={{sm: 2, md: 3, lg: 4, xl: 5}} m="auto" mt="0px" spacing={4} w="70%">
+    <SimpleGrid
+      columns={{sm: 2, md: 3, lg: 4, xl: 5}}
+      m="auto"
+      mt="0px"
+      spacing={4}
+      w={{sm: "80%", md: "70%", lg: "70%", xl: "70%"}}
+    >
       <GridItem colSpan={{sm: 2, md: 3, lg: 4, xl: 5}}>
         <Text color="primary" fontSize="4xl" fontWeight="semibold" m="30px">
           Please select two series
@@ -122,18 +103,22 @@ const SelectOptions: React.FC<Props> = ({options, state}) => {
       {status === true &&
         series.map((elem) => {
           return (
-            <Box key={elem.id} boxShadow="lg">
+            <motion.div
+              key={elem.id}
+              animate="visible"
+              initial="hidden"
+              transition={{duration: 0.3}}
+              variants={animation}
+            >
               {options[0] === undefined && (
-                <Button _hover={{}} h="100%" w="100%" onClick={() => selectOption(elem)}>
-                  <Box m="auto" p={2} w="100%">
-                    <Img h="100%" src={urlImage + elem.poster_path} w="100%" />
-                    <Text overflow="hidden" p={2}>
-                      {elem.name}
-                    </Text>
-                  </Box>
-                </Button>
+                <Option
+                  disabled={false}
+                  name={elem.name}
+                  select={() => selectOption(elem)}
+                  url={urlImage + elem.poster_path}
+                />
               )}
-            </Box>
+            </motion.div>
           )
         })}
     </SimpleGrid>
